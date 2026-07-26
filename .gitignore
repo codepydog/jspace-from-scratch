@@ -1,0 +1,25 @@
+# python
+.venv/
+__pycache__/
+*.pyc
+*.egg-info/
+.ipynb_checkpoints/
+
+# uv
+uv.lock
+
+# macOS
+.DS_Store
+
+# model / lens artifacts (大檔,不進 git)
+models/
+lenses/
+*.pt
+*.npz
+*.safetensors
+
+# 產出圖表
+outputs/
+*.png
+# ...但 notebook 的架構圖是要進 repo 的
+!assets/*.png
