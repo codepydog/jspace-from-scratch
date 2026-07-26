@@ -1,12 +1,38 @@
-# J-space on Apple Silicon
+# J-space from scratch - Qwen3.6-27B-4bit
 
-用 MLX 在本地復現 Anthropic 的 Jacobian lens,model 是 Qwen3.6-27B-4bit。
-論文:[Verbalizable Representations Form a Global Workspace in Language Models](https://transformer-circuits.pub/2026/workspace/index.html)
+用 MLX 在 Apple Silicon 上從頭復現 Anthropic 的 Jacobian lens。
+Notebook 含輸出:[`jacobian_space_from_scratch_qwen36-27b.ipynb`](jacobian_space_from_scratch_qwen36-27b.ipynb) · [PDF](assets/jspace_notebook.pdf)
 
-- 簡報,19 頁中譯:[`assets/jspace_report.pdf`](assets/jspace_report.pdf)
-- Notebook,含輸出:[`jacobian_space_from_scratch_qwen36-27b.ipynb`](jacobian_space_from_scratch_qwen36-27b.ipynb)([PDF](assets/jspace_notebook.pdf))
-- 互動版,同一顆 model:<https://www.neuronpedia.org/qwen3.6-27b/jlens>
+## Source
 
-## 自己跑
+- 論文:[Verbalizable Representations Form a Global Workspace in Language Models](https://transformer-circuits.pub/2026/workspace/index.html)
+- Blog:[A global workspace in language models](https://www.anthropic.com/research/global-workspace) · [中譯簡報](assets/jspace_report.pdf)
+- 官方 code:[anthropics/jacobian-lens](https://github.com/anthropics/jacobian-lens)
+- Demo:<https://www.neuronpedia.org/qwen3.6-27b/jlens>
 
-`models/Qwen3.6-27B-4bit/` 底下要放權重([`mlx-community/Qwen3.6-27B-4bit`](https://huggingface.co/mlx-community/Qwen3.6-27B-4bit))和 lens `jlens.npz`([`neuronpedia/jacobian-lens`](https://huggingface.co/neuronpedia/jacobian-lens))。然後 `uv sync`,開 notebook。
+## How to run local
+
+### 配備
+
+- Apple Silicon,統一記憶體 32 GB(實測 M4 / 32 GB / macOS 26)
+- 磁碟 18 GB:權重 15 GB + lens 3.1 GB
+- Python 3.13、mlx 0.32、mlx-vlm 0.6.4
+
+### Model download
+
+```bash
+uv sync
+D=models/Qwen3.6-27B-4bit
+
+uv run hf download mlx-community/Qwen3.6-27B-4bit --local-dir $D
+
+gh release download v0.2-fulldepth --repo WeZZard/jlens-qwen36 \
+  --pattern '*.npz.part-*' --dir $D
+cat $D/*.npz.part-* > $D/jlens.npz && rm $D/*.part-*
+```
+
+notebook 讀的 lens 格式是 `{J_<layer>: (d,d) fp16}` 加上 `__source_layers__` / `__n_prompts__` metadata,別的來源要自己對一下 key。
+
+### Run
+
+開 [`jacobian_space_from_scratch_qwen36-27b.ipynb`](jacobian_space_from_scratch_qwen36-27b.ipynb),Run All。
