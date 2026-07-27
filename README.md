@@ -3,6 +3,10 @@
 用 MLX 在 Apple Silicon 上從頭復現 Anthropic 的 Jacobian lens。
 Notebook 含輸出:[`jacobian_space_from_scratch_qwen36-27b.ipynb`](jacobian_space_from_scratch_qwen36-27b.ipynb) · [PDF](assets/jspace_notebook.pdf)
 
+Demo 用的輕量版:[`jacobian_lens_demo.ipynb`](jacobian_lens_demo.ipynb)。同一條路線,
+程式碼砍到剩骨架,J 那一項改成先用「推一下看終點怎麼動」講清楚再談微分,沒有存輸出,
+跑之前 Run All。
+
 ## Source
 
 - 論文:[Verbalizable Representations Form a Global Workspace in Language Models](https://transformer-circuits.pub/2026/workspace/index.html)
