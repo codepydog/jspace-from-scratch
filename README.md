@@ -3,9 +3,8 @@
 用 MLX 在 Apple Silicon 上從頭復現 Anthropic 的 Jacobian lens。
 Notebook 含輸出:[`jacobian_space_from_scratch_qwen36-27b.ipynb`](jacobian_space_from_scratch_qwen36-27b.ipynb) · [PDF](assets/jspace_notebook.pdf)
 
-Demo 用的輕量版:[`jacobian_lens_demo.ipynb`](jacobian_lens_demo.ipynb)。同一條路線,
-程式碼砍到剩骨架,J 那一項改成先用「推一下看終點怎麼動」講清楚再談微分,沒有存輸出,
-跑之前 Run All。
+Demo 用的簡化版,含輸出:[`jlens_demo_qwen36-27b.ipynb`](jlens_demo_qwen36-27b.ipynb)。
+只走「法國的首都」一個例子,先用式子講原理再算一次,論文其餘的結果收在附錄。
 
 ## Source
 
