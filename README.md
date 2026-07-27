@@ -1,10 +1,10 @@
 # J-space from scratch - Qwen3.6-27B-4bit
 
 用 MLX 在 Apple Silicon 上從頭復現 Anthropic 的 Jacobian lens。
-Notebook 含輸出:[`jacobian_lens_full.ipynb`](jacobian_lens_full.ipynb) · [PDF](assets/jspace_notebook.pdf)
+Notebook 含輸出:[`jacobian_lens.ipynb`](jacobian_lens.ipynb) · [PDF](assets/jspace_notebook.pdf)
 
-Demo 用的簡化版,含輸出:[`jacobian_lens_demo.ipynb`](jacobian_lens_demo.ipynb)。
-只走「法國的首都」一個例子,先用式子講原理再算一次,論文其餘的結果收在附錄。
+前三節是十分鐘的 demo:架構、原理、用「法國的首都」算一次。附錄 A 到 I 是實作細節和
+論文五個 workspace 面向的完整實驗,都能重跑。
 
 ## Source
 
@@ -38,4 +38,4 @@ notebook 讀的 lens 格式是 `{J_<layer>: (d,d) fp16}` 加上 `__source_layers
 
 ### Run
 
-開 [`jacobian_lens_full.ipynb`](jacobian_lens_full.ipynb),Run All。
+開 [`jacobian_lens.ipynb`](jacobian_lens.ipynb),Run All。
