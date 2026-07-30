@@ -1,41 +1,63 @@
-# J-space from scratch - Qwen3.6-27B-4bit
+# Jacobian Lens Demo
 
-用 MLX 在 Apple Silicon 上從頭復現 Anthropic 的 Jacobian lens。
-Notebook 含輸出:[`jacobian_lens.ipynb`](jacobian_lens.ipynb) · [PDF](assets/jspace_notebook.pdf)
+A compact MLX notebook for understanding Jacobian lens on Qwen3.6-27B.
 
-前三節是十分鐘的 demo:架構、原理、用「法國的首都」算一次。附錄 A 到 I 是實作細節和
-論文五個 workspace 面向的完整實驗,都能重跑。
+[Open the notebook](jacobian_lens_demo.ipynb)
 
-## Source
+## What it covers
 
-- 論文:[Verbalizable Representations Form a Global Workspace in Language Models](https://transformer-circuits.pub/2026/workspace/index.html)
-- Blog:[A global workspace in language models](https://www.anthropic.com/research/global-workspace) · [中譯簡報](assets/jspace_report.pdf)
-- 官方 code:[anthropics/jacobian-lens](https://github.com/anthropics/jacobian-lens)
-- Demo:<https://www.neuronpedia.org/qwen3.6-27b/jlens>
+- One forward pass: text → token IDs → embeddings → logits → next token
+- The residual stream
+- Logit lens vs Jacobian lens
+- A local J-lens direction computed with backpropagation
+- Concept swap: `France → China`
+- A two-hop intervention: `Eiffel Tower → France → Paris`
 
-## How to run local
+The notebook is written in Traditional Chinese.
 
-### 配備
+## Requirements
 
-- Apple Silicon,統一記憶體 32 GB(實測 M4 / 32 GB / macOS 26)
-- 磁碟 18 GB:權重 15 GB + lens 3.1 GB
-- Python 3.13、mlx 0.32、mlx-vlm 0.6.4
+- Apple Silicon
+- 32 GB unified memory
+- About 18 GB of free disk space
+- Python 3.12+
 
-### Model download
+Tested on an M4 Mac with 32 GB memory.
+
+## Setup
+
+Install the environment:
 
 ```bash
 uv sync
-D=models/Qwen3.6-27B-4bit
-
-uv run hf download mlx-community/Qwen3.6-27B-4bit --local-dir $D
-
-gh release download v0.2-fulldepth --repo WeZZard/jlens-qwen36 \
-  --pattern '*.npz.part-*' --dir $D
-cat $D/*.npz.part-* > $D/jlens.npz && rm $D/*.part-*
 ```
 
-notebook 讀的 lens 格式是 `{J_<layer>: (d,d) fp16}` 加上 `__source_layers__` / `__n_prompts__` metadata,別的來源要自己對一下 key。
+Download the 4-bit model:
 
-### Run
+```bash
+MODEL_DIR=models/Qwen3.6-27B-4bit
 
-開 [`jacobian_lens.ipynb`](jacobian_lens.ipynb),Run All。
+uv run hf download mlx-community/Qwen3.6-27B-4bit \
+  --local-dir "$MODEL_DIR"
+```
+
+Download the precomputed Jacobian lens:
+
+```bash
+gh release download v0.2-fulldepth \
+  --repo WeZZard/jlens-qwen36 \
+  --pattern '*.npz.part-*' \
+  --dir "$MODEL_DIR"
+
+cat "$MODEL_DIR"/*.npz.part-* > "$MODEL_DIR/jlens.npz"
+rm "$MODEL_DIR"/*.npz.part-*
+```
+
+Open `jacobian_lens_demo.ipynb`, select the project environment, and run the cells in order.
+
+## Sources
+
+- [Verbalizable Representations Form a Global Workspace in Language Models](https://transformer-circuits.pub/2026/workspace/index.html)
+- [Anthropic Jacobian lens implementation](https://github.com/anthropics/jacobian-lens)
+- [Precomputed Qwen3.6-27B lens](https://huggingface.co/neuronpedia/jacobian-lens)
+- [Neuronpedia J-lens demo](https://www.neuronpedia.org/qwen3.6-27b/jlens)

@@ -1,11 +1,11 @@
 [project]
 name = "jspace-repro"
 version = "0.1.0"
-description = "Reproduce Anthropic's Jacobian lens (J-space) on Apple Silicon with MLX — see jacobian_lens.ipynb"
+description = "A compact Jacobian lens demo for Qwen3.6-27B on Apple Silicon"
 requires-python = ">=3.12"
 dependencies = [
     "mlx",
-    "mlx-vlm",
+    "mlx-vlm>=0.6.5",
     "numpy",
     "ipykernel",
     "ipywidgets",
